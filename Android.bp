@@ -107,6 +107,7 @@ cc_binary {
         "libhwservicemanager",
         "libtokenmanager",
     ],
+    bootstrap: true,
 }
 
 cc_test {
