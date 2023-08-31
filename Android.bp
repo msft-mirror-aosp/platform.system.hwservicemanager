@@ -111,6 +111,7 @@ cc_binary {
         "libtokenmanager",
     ],
     bootstrap: true,
+    system_ext_specific: true,
 }
 
 cc_test {
