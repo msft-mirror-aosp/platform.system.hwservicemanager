@@ -1,4 +1,4 @@
-service hwservicemanager /system/bin/hwservicemanager
+service hwservicemanager /system/system_ext/bin/hwservicemanager
     user system
     disabled
     group system readproc
