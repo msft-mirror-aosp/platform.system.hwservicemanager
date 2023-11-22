@@ -112,7 +112,6 @@ cc_binary {
     ],
     bootstrap: true,
     system_ext_specific: true,
-    required: ["hwservicemanager_compat_symlink_module"],
 }
 
 // Create symlink /system/bin/hwservicemanager -> /system/system_ext/bin/hwservicemanager
