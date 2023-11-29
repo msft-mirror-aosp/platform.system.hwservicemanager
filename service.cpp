@@ -26,6 +26,7 @@
 #include <cutils/properties.h>
 #include <hidl/HidlBinderSupport.h>
 #include <hidl/HidlTransportSupport.h>
+#include <hidl/ServiceManagement.h>
 #include <hidl/Status.h>
 #include <hwbinder/IPCThreadState.h>
 #include <hwbinder/ProcessState.h>
@@ -145,6 +146,18 @@ int main() {
 
     // TODO(b/36424585): make fatal
     ProcessState::self()->setCallRestriction(ProcessState::CallRestriction::ERROR_IF_NOT_ONEWAY);
+    if (!android::hardware::isHidlSupported()) {
+        ALOGI("HIDL is not supported on this device so hwservicemanager is not needed");
+        int rc = property_set("hwservicemanager.disabled", "true");
+        if (rc) {
+            LOG_ALWAYS_FATAL("Failed to set \"hwservicemanager.disabled\" (error %d).\"", rc);
+        }
+        // wait here for init to see the proprty and shut us down
+        while (true) {
+            ALOGW("Waiting on init to shut this process down.");
+            sleep(10);
+        }
+    }
 
     sp<ServiceManager> manager = new ServiceManager();
     setRequestingSid(manager, true);
