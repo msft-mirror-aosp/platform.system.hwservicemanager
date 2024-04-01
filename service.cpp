@@ -36,6 +36,7 @@
 
 #include "ServiceManager.h"
 #include "TokenManager.h"
+#include "Vintf.h"
 
 // libutils:
 using android::sp;
@@ -146,7 +147,8 @@ int main() {
 
     // TODO(b/36424585): make fatal
     ProcessState::self()->setCallRestriction(ProcessState::CallRestriction::ERROR_IF_NOT_ONEWAY);
-    if (!android::hardware::isHidlSupported()) {
+    auto transport = android::hardware::getTransport(ServiceManager::descriptor, serviceName);
+    if (transport == android::vintf::Transport::EMPTY) {
         ALOGI("HIDL is not supported on this device so hwservicemanager is not needed");
         int rc = property_set("hwservicemanager.disabled", "true");
         if (rc) {
@@ -166,9 +168,17 @@ int main() {
         ALOGE("Failed to register hwservicemanager with itself.");
     }
 
-    sp<TokenManager> tokenManager = new TokenManager();
-    if (!manager->add(serviceName, tokenManager).withDefault(false)) {
-        ALOGE("Failed to register ITokenManager with hwservicemanager.");
+    // Check to make sure we should be registering tokenManager first. Only if
+    // it's declared in the manifest.
+    sp<TokenManager> tokenManager;
+    if (android::vintf::Transport::EMPTY !=
+        android::hardware::getTransport(TokenManager::descriptor, serviceName)) {
+        tokenManager = new TokenManager();
+        if (!manager->add(serviceName, tokenManager).withDefault(false)) {
+            ALOGE("Failed to register ITokenManager with hwservicemanager.");
+        }
+    } else {
+        ALOGW("Not registering android.hidl.token service because it is no longer supported");
     }
 
     // Tell IPCThreadState we're the service manager
