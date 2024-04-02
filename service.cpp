@@ -147,8 +147,7 @@ int main() {
 
     // TODO(b/36424585): make fatal
     ProcessState::self()->setCallRestriction(ProcessState::CallRestriction::ERROR_IF_NOT_ONEWAY);
-    auto transport = android::hardware::getTransport(ServiceManager::descriptor, serviceName);
-    if (transport == android::vintf::Transport::EMPTY) {
+    if (!android::hardware::isHidlSupported()) {
         ALOGI("HIDL is not supported on this device so hwservicemanager is not needed");
         int rc = property_set("hwservicemanager.disabled", "true");
         if (rc) {
