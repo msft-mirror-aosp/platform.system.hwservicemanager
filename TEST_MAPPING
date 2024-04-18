@@ -5,6 +5,14 @@
     },
     {
       "name": "hidl_lazy_test"
+    },
+    {
+       "name": "CtsOsTestCases",
+       "options": [
+           {
+              "include-filter": "android.os.cts.HwBinderTest"
+           }
+       ]
     }
   ],
   "hwasan-presubmit": [
@@ -13,16 +21,6 @@
     },
     {
       "name": "hidl_lazy_test"
-    }
-  ],
-  "postsubmit": [
-    {
-       "name": "CtsOsTestCases",
-       "options": [
-           {
-              "include-filter": "android.os.cts.HwBinderTest"
-           }
-       ]
     }
   ]
 }
