@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package {
+    default_team: "trendy_team_android_hardware_backed_security",
     default_applicable_licenses: ["system_hwservicemanager_license"],
 }
 
@@ -93,9 +94,6 @@ cc_binary {
         "hwservicemanager_defaults",
         "libhwservicemanager_shared_libs",
         "libtokenmanager_shared_libs",
-    ],
-    vintf_fragments: [
-        "hwservicemanager.xml",
     ],
     init_rc: [
         "hwservicemanager.rc",
