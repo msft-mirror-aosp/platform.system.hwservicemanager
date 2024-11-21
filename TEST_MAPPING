@@ -7,12 +7,7 @@
       "name": "hidl_lazy_test"
     },
     {
-       "name": "CtsOsTestCases",
-       "options": [
-           {
-              "include-filter": "android.os.cts.HwBinderTest"
-           }
-       ]
+      "name": "CtsOsTestCases_cts_hwbindertest"
     }
   ],
   "hwasan-presubmit": [
