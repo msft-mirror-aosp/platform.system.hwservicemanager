@@ -159,12 +159,6 @@ int main() {
             ALOGW("Waiting on init to shut this process down.");
             sleep(10);
         }
-    } else {
-        int rc = property_set("hwservicemanager.disabled", "false");
-        if (rc) {
-            LOG_ALWAYS_FATAL("Failed to set \"hwservicemanager.disabled\" to true (error %d).\"",
-                             rc);
-        }
     }
 
     sp<ServiceManager> manager = new ServiceManager();
