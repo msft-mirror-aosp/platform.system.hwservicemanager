@@ -161,6 +161,10 @@ int main() {
         }
     }
 
+    if (int rc = property_set("hwservicemanager.disabled", "false"); rc != 0) {
+        LOG_ALWAYS_FATAL("Failed to set \"hwservicemanager.disabled\" to false (error %d).\"", rc);
+    }
+
     sp<ServiceManager> manager = new ServiceManager();
     setRequestingSid(manager, true);
 
@@ -188,8 +192,7 @@ int main() {
     // Then tell the kernel
     ProcessState::self()->becomeContextManager();
 
-    int rc = property_set("hwservicemanager.ready", "true");
-    if (rc) {
+    if (int rc = property_set("hwservicemanager.ready", "true"); rc != 0) {
         ALOGE("Failed to set \"hwservicemanager.ready\" (error %d). "\
               "HAL services will not start!\n", rc);
     }
